@@ -14,8 +14,8 @@ public class Main {
         double[][] positions = new double[Config.particleAmount][2];
 
         for (int i = 0; i < Config.particleAmount; i++) {
-            positions[i][0] = rand.nextInt(Config.frameWidth - Config.borderOffset);
-            positions[i][1] = rand.nextInt(Config.frameHeight - Config.borderOffset);
+            positions[i][0] = Config.borderOffset + rand.nextInt(Config.frameWidth - 2 * Config.borderOffset);
+            positions[i][1] = Config.borderOffset + rand.nextInt(Config.frameHeight - 2 * Config.borderOffset);
         }
         for (int i = 0; i < Config.particleAmount; i++) {
             particles.add(new Particle(positions[i][0], positions[i][1], Color.BLUE));
@@ -41,6 +41,7 @@ public class Main {
         updatePressures();
         //densityDebug();
 
+        double dt = Config.timeStep;
         for (Particle p : particles) {
 
 
@@ -48,8 +49,11 @@ public class Main {
             
             //System.out.println("x: " + pressure[0] + " y: " + pressure[1]);
 
-            p.vel[0] += pressure[0] * Config.velDamp;
-            p.vel[1] += pressure[1] * Config.velDamp;
+            p.vel[0] += pressure[0] * dt;
+            p.vel[1] += pressure[1] * dt; //+ Config.grav * dt;
+
+            p.vel[0] *= Config.velDamp;
+            p.vel[1] *= Config.velDamp;
 
             p.pos[0] += p.vel[0];
             p.pos[1] += p.vel[1];

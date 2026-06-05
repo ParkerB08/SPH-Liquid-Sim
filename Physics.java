@@ -45,8 +45,8 @@ public class Physics {
             influence = derivativeKernel(Config.smoothingRadius, distance);
             sharedPressure = pressure / Math.pow(density, 2) + p.pressure / Math.pow(p.density, 2);
 
-            pressureForce[0] += sharedPressure * Config.mass * influence * direction[0];
-            pressureForce[1] += sharedPressure * Config.mass * influence * direction[1];
+            pressureForce[0] -= sharedPressure * Config.mass * influence * direction[0];
+            pressureForce[1] -= sharedPressure * Config.mass * influence * direction[1];
         }
         return pressureForce;
     }

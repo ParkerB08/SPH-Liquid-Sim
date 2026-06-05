@@ -1,13 +1,13 @@
 import java.awt.Color;
 
 public class Particle {
-    public int[] pos;
+    public double[] pos;  
+    public double[] vel;     
     public Color colour;
-    public int radius;
 
-    public Particle(int[] pos, Color colour, int radius){
-        this.pos = pos;
+    public Particle(double x, double y, Color colour) {
+        this.pos = new double[]{x, y};
+        this.vel = new double[]{0, 0};
         this.colour = colour;
-        this.radius = radius;
     }
 }

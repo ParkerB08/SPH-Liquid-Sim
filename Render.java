@@ -22,7 +22,7 @@ public class Render extends JPanel {
 
         for (Particle p : particles) {
             g2.setColor(p.colour);
-            g2.fillOval((int) p.pos[0], (int) p.pos[1], p.radius * 2, p.radius * 2);
+            g2.fillOval((int) p.pos[0], (int) p.pos[1], Config.particleRadius * 2, Config.particleRadius * 2);
         }
     }
 }

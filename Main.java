@@ -5,10 +5,12 @@ import java.util.Random;
 import javax.swing.Timer;
 
 public class Main {
+
+    private static ArrayList<Particle> particles = new ArrayList<>();
+
     public static void main(String[] args) {
 
         Random rand = new Random();
-        ArrayList<Particle> particles = new ArrayList<>();
         double[][] positions = new double[Config.particleAmount][2];
 
         for (int i = 0; i < Config.particleAmount; i++) {
@@ -30,12 +32,24 @@ public class Main {
 
         Timer timer = new Timer(16, e -> {update(particles); render.repaint();});
         timer.start();
+
     }
 
     public static void update(ArrayList<Particle> particles){
+
+        updateDensities();
+        updatePressures();
+        //densityDebug();
+
         for (Particle p : particles) {
 
-            //p.vel[1] += Config.grav;
+
+            double[] pressure = Physics.calculatePressure(p.pos[0], p.pos[1], p.pressure, p.density);
+            
+            //System.out.println("x: " + pressure[0] + " y: " + pressure[1]);
+
+            p.vel[0] += pressure[0] * Config.velDamp;
+            p.vel[1] += pressure[1] * Config.velDamp;
 
             p.pos[0] += p.vel[0];
             p.pos[1] += p.vel[1];
@@ -57,6 +71,28 @@ public class Main {
             p.pos[0] = Config.borderOffset;
             p.vel[0] *= -Config.borderDamp;
             }
+        }
+    }
+
+    public static ArrayList<Particle> getParticles() {
+        return particles;
+    }
+
+    public static void densityDebug(){
+            Config.smoothingRadius += 1;
+            System.out.println(Physics.calculateDensity(Config.frameWidth / 2, Config.frameHeight / 2));
+            System.out.println(Config.smoothingRadius);
+    }
+
+    public static void updateDensities(){
+        for (Particle p : particles) {
+            p.density = Physics.calculateDensity(p.pos[0], p.pos[1]);
+        }
+    }
+
+    public static void updatePressures(){
+        for (Particle p : particles) {
+            p.pressure = Physics.densityToPressure(p.density);
         }
     }
 }

@@ -2,30 +2,38 @@ import java.util.ArrayList;
 
 public class Physics { 
 
-    public static double smoothingKernel(double radius, double distance){
-        double influence = radius - distance;
+    public static double smoothingKernel(double d) {
+
+        int r = Config.smoothingRadius;
+        double influence = r - d;
+
         if (influence > 0){
-            double volume = 10 / (Math.PI * Math.pow(radius, 5));
-            return volume * Math.pow(influence, 3);
+            double volume = 10 / (Math.PI * (r * r * r * r * r));
+            return volume * (influence * influence * influence);
         }
         return 0;
     }
 
-    public static double derivativeKernel(double radius, double distance){
+    public static double derivativeKernel(double d) {
 
-        double influence = radius - distance;
+        int r = Config.smoothingRadius;
+        double influence = r - d;
 
         if (influence > 0){
-            return (30 / (Math.PI * Math.pow(radius, 5)) * Math.pow(influence, 2));
+            return (30 / (Math.PI * (r * r * r * r * r)) * (influence * influence));
         }
         return 0;
     }
 
     public static double calculateDensity(double x, double y, ArrayList<Particle> neighbors) {
+
         double density = 0;
+         
         for (Particle p : neighbors){
-            double distance = Math.pow(Math.pow((p.pos[0] - x), 2) + Math.pow((p.pos[1] - y), 2), 0.5);
-            density += Config.mass * smoothingKernel(Config.smoothingRadius, distance);
+            double dx = p.pos[0] - x;
+            double dy = p.pos[1] - y;
+            double distance = Math.hypot(dx, dy);
+            density += Config.mass * smoothingKernel(distance);
         }
         return density;
     }
@@ -38,14 +46,15 @@ public class Physics {
         double influence;
 
         for (Particle p : neighbors) {
+
             double distance = Math.hypot(p.pos[0] - x, p.pos[1] - y);
             if (distance == 0) continue;
 
             direction[0] = (x - p.pos[0]) / distance;
             direction[1] = (y - p.pos[1]) / distance;
 
-            influence = derivativeKernel(Config.smoothingRadius, distance);
-            sharedPressure = pressure / Math.pow(density, 2) + p.pressure / Math.pow(p.density, 2);
+            influence = derivativeKernel(distance);
+            sharedPressure = pressure / (density * density) + p.pressure / (density * density);
 
             pressureForce[0] -= sharedPressure * Config.mass * influence * direction[0];
             pressureForce[1] -= sharedPressure * Config.mass * influence * direction[1];

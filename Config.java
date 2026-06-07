@@ -8,7 +8,7 @@ public class Config {
     public static int particleAmount = 1000;
     public static double grav = 0;
     public static double borderDamp = 0.7;
-    public static double velDamp = 0.999;
+    public static double velDamp = 0.99;
     public static double timeStep = 0.016;
 
     public static int mass = 1;

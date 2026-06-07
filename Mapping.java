@@ -2,32 +2,35 @@ import java.util.ArrayList;
 
 public class Mapping {
 
-    public static ArrayList<ArrayList<ArrayList<Particle>>> updateGrid() {
+    private static int cols = Config.frameWidth / Config.smoothingRadius + 1;
+    private static int rows = Config.frameHeight / Config.smoothingRadius + 1;
+    private static ArrayList<Particle>[] flatGrid;
 
-        int cols = Config.frameWidth / Config.smoothingRadius + 1;
-        int rows = Config.frameHeight / Config.smoothingRadius + 1;
-        ArrayList<ArrayList<ArrayList<Particle>>> grid = new ArrayList<>();
 
-        for (int y = 0; y < rows; y++) {
-            ArrayList<ArrayList<Particle>> row = new ArrayList<>();
-            for (int x = 0; x < cols; x++) {
-                row.add(new ArrayList<>());
-            }
-            grid.add(row);
+    public static void initGrid() {
+        flatGrid = new ArrayList[cols * rows];
+        for (int i = 0; i < flatGrid.length; i++) {
+            flatGrid[i] = new ArrayList<>();
+        }
+    }
+
+
+    public static void updateGrid() {
+
+        for (ArrayList<Particle> cell : flatGrid) {
+            cell.clear();
         }
 
         for (Particle p : Main.getParticles()) {
-
             p.cellX = (int)(p.pos[0] / Config.smoothingRadius);
             p.cellY = (int)(p.pos[1] / Config.smoothingRadius);
-
-            grid.get(p.cellY).get(p.cellX).add(p);
+            flatGrid[p.cellY * cols + p.cellX].add(p);
         }
-        return grid;
     }
+        
+    public static ArrayList<Particle> neighborhoodSearch(double x, double y, ArrayList<Particle> result) {
 
-    public static ArrayList<Particle> neighborhoodSearch(ArrayList<ArrayList<ArrayList<Particle>>> grid, double x, double y) {
-
+        result.clear();
         int cx =  (int) (x / Config.smoothingRadius);
         int cy =  (int) (y / Config.smoothingRadius);
 
@@ -39,8 +42,8 @@ public class Mapping {
                 int nx = cx + dx;
                 int ny = cy + dy;
 
-                if (nx >= 0 && nx < grid.get(0).size() && ny >= 0 && ny < grid.size()) {
-                    neighbors.addAll(grid.get(ny).get(nx));
+                if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
+                    result.addAll(flatGrid[ny * cols + nx]);
                 }
             }
         }

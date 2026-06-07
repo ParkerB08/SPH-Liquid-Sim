@@ -11,6 +11,7 @@ public class Particle {
     public Particle(double x, double y, Color colour) {
         this.pos = new double[]{x, y};
         this.vel = new double[]{0, 0};
+        this.neighbors = new ArrayList<>(64);
         this.colour = colour;
         this.density = 0;
     }

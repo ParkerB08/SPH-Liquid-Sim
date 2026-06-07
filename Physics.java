@@ -32,7 +32,7 @@ public class Physics {
         for (Particle p : neighbors){
             double dx = p.pos[0] - x;
             double dy = p.pos[1] - y;
-            double distance = Math.hypot(dx, dy);
+            double distance = Math.sqrt(dx * dx + dy * dy);
             density += Config.mass * smoothingKernel(distance);
         }
         return density;
@@ -47,14 +47,17 @@ public class Physics {
 
         for (Particle p : neighbors) {
 
-            double distance = Math.hypot(p.pos[0] - x, p.pos[1] - y);
+            double dx = p.pos[0] - x;
+            double dy = p.pos[1] - y;
+            double distance = Math.sqrt(dx * dx + dy * dy);
+            
             if (distance == 0) continue;
 
             direction[0] = (x - p.pos[0]) / distance;
             direction[1] = (y - p.pos[1]) / distance;
 
             influence = derivativeKernel(distance);
-            sharedPressure = pressure / (density * density) + p.pressure / (density * density);
+            sharedPressure = pressure / (density * density) + p.pressure / (p.density * p.density);
 
             pressureForce[0] -= sharedPressure * Config.mass * influence * direction[0];
             pressureForce[1] -= sharedPressure * Config.mass * influence * direction[1];

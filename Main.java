@@ -39,9 +39,10 @@ public class Main {
     public static void update(ArrayList<Particle> particles){
 
         // updates
-        ArrayList<ArrayList<ArrayList<Particle>>> grid = Mapping.updateGrid();
+        Mapping.initGrid();
+        Mapping.updateGrid();
         for (Particle p : particles) {
-            p.neighbors = Mapping.neighborhoodSearch(grid, p.pos[0], p.pos[1]);
+            Mapping.neighborhoodSearch(p.pos[0], p.pos[1], p.neighbors); 
         }
         updateDensities();
         updatePressures();

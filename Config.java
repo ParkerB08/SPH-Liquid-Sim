@@ -2,7 +2,7 @@ public class Config {
 
     public static int frameWidth = 1000;
     public static int frameHeight = 800;
-    public static int borderOffset = 25;
+    public static int borderOffset = 50;
     public static int particleRadius = 5;
 
     public static int particleAmount = 1000;

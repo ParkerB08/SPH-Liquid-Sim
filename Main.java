@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.Timer;
 
+import core.Particle;
+import core.Config;
+import calculations.Mapping;
+import calculations.Physics;
+import render.Render;
+
 public class Main {
 
     private static ArrayList<Particle> particles = new ArrayList<>();
@@ -40,12 +46,13 @@ public class Main {
 
         // updates
         Mapping.initGrid();
-        Mapping.updateGrid();
+        Mapping.updateGrid(particles);
         for (Particle p : particles) {
             Mapping.neighborhoodSearch(p.pos[0], p.pos[1], p.neighbors); 
         }
         updateDensities();
         updatePressures();
+        
         double dt = Config.timeStep;
 
         for (Particle p : particles) {

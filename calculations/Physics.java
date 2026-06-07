@@ -1,4 +1,8 @@
+package calculations;
+
 import java.util.ArrayList;
+import core.Config;
+import core.Particle;
 
 public class Physics { 
 
@@ -50,7 +54,7 @@ public class Physics {
             double dx = p.pos[0] - x;
             double dy = p.pos[1] - y;
             double distance = Math.sqrt(dx * dx + dy * dy);
-            
+
             if (distance == 0) continue;
 
             direction[0] = (x - p.pos[0]) / distance;

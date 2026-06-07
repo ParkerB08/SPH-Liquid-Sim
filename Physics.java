@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Physics { 
 
     public static double smoothingKernel(double radius, double distance){
@@ -19,23 +21,23 @@ public class Physics {
         return 0;
     }
 
-    public static double calculateDensity(double x,double y){
+    public static double calculateDensity(double x, double y, ArrayList<Particle> neighbors) {
         double density = 0;
-        for (Particle p : Main.getParticles()){
+        for (Particle p : neighbors){
             double distance = Math.pow(Math.pow((p.pos[0] - x), 2) + Math.pow((p.pos[1] - y), 2), 0.5);
             density += Config.mass * smoothingKernel(Config.smoothingRadius, distance);
         }
         return density;
     }
 
-    public static double[] calculatePressure(double x, double y, double pressure, double density) {
+    public static double[] calculatePressure(double x, double y, double pressure, double density, ArrayList<Particle> neighbors) {
 
         double[] pressureForce = {0, 0};
         double[] direction = {0, 0};
         double sharedPressure;
         double influence;
 
-        for (Particle p : Main.getParticles()) {
+        for (Particle p : neighbors) {
             double distance = Math.hypot(p.pos[0] - x, p.pos[1] - y);
             if (distance == 0) continue;
 

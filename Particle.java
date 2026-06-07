@@ -1,9 +1,12 @@
 import java.awt.Color;
+import java.util.ArrayList;
 
 public class Particle {
     public double[] pos, vel;       
     public Color colour;
     public double density, pressure;
+    public int cellX, cellY;
+    public ArrayList<Particle> neighbors;
 
     public Particle(double x, double y, Color colour) {
         this.pos = new double[]{x, y};

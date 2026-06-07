@@ -13,6 +13,7 @@ public class Main {
         Random rand = new Random();
         double[][] positions = new double[Config.particleAmount][2];
 
+        // spawn particles
         for (int i = 0; i < Config.particleAmount; i++) {
             positions[i][0] = Config.borderOffset + rand.nextInt(Config.frameWidth - 2 * Config.borderOffset);
             positions[i][1] = Config.borderOffset + rand.nextInt(Config.frameHeight - 2 * Config.borderOffset);
@@ -37,20 +38,22 @@ public class Main {
 
     public static void update(ArrayList<Particle> particles){
 
+        // updates
+        ArrayList<ArrayList<ArrayList<Particle>>> grid = Mapping.updateGrid();
+        for (Particle p : particles) {
+            p.neighbors = Mapping.neighborhoodSearch(grid, p.pos[0], p.pos[1]);
+        }
         updateDensities();
         updatePressures();
-        //densityDebug();
-
         double dt = Config.timeStep;
+
         for (Particle p : particles) {
-
-
-            double[] pressure = Physics.calculatePressure(p.pos[0], p.pos[1], p.pressure, p.density);
             
-            //System.out.println("x: " + pressure[0] + " y: " + pressure[1]);
+            // forces
+            double[] pressure = Physics.calculatePressure(p.pos[0], p.pos[1], p.pressure, p.density, p.neighbors);
 
-            p.vel[0] += pressure[0] * dt;
-            p.vel[1] += pressure[1] * dt; //+ Config.grav * dt;
+            p.vel[0] += -pressure[0] * dt;
+            p.vel[1] += (-pressure[1] + Config.grav) * dt;
 
             p.vel[0] *= Config.velDamp;
             p.vel[1] *= Config.velDamp;
@@ -82,15 +85,9 @@ public class Main {
         return particles;
     }
 
-    public static void densityDebug(){
-            Config.smoothingRadius += 1;
-            System.out.println(Physics.calculateDensity(Config.frameWidth / 2, Config.frameHeight / 2));
-            System.out.println(Config.smoothingRadius);
-    }
-
     public static void updateDensities(){
         for (Particle p : particles) {
-            p.density = Physics.calculateDensity(p.pos[0], p.pos[1]);
+            p.density = Physics.calculateDensity(p.pos[0], p.pos[1], p.neighbors);
         }
     }
 

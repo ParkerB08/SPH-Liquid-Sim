@@ -29,6 +29,7 @@ public class Main {
 
         JFrame frame = new JFrame("SPH Liquid Sim");
         Render render = new Render(particles);
+        
         render.setPreferredSize(new java.awt.Dimension(Config.frameWidth, Config.frameHeight));
         frame.add(render);
         frame.pack();
@@ -57,12 +58,10 @@ public class Main {
             double[] pressure = Physics.calculatePressure(p.pos[0], p.pos[1], p.pressure, p.density, p.neighbors);
 
             p.vel[0] += -pressure[0] * dt;
-            p.vel[1] += -pressure[1] * dt;
+            p.vel[1] += (-pressure[1] + Config.grav) * dt;
 
             p.vel[0] *= Config.velDamp;
             p.vel[1] *= Config.velDamp;
-
-            p.vel[1] +=  Config.grav * dt;
 
             p.pos[0] += p.vel[0];
             p.pos[1] += p.vel[1];

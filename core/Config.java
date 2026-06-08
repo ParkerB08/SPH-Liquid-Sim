@@ -7,8 +7,8 @@ public class Config {
     public static int borderOffset = 25;
     public static int particleRadius = 5;
 
-    public static int particleAmount = 2500;
-    public static double grav = 7;
+    public static int particleAmount = 1000;
+    public static double grav = 5;
     public static double borderDamp = 0.7;
     public static double velDamp = 0.985;
     public static double friction = 0.3;

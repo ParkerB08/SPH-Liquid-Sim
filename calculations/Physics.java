@@ -6,9 +6,13 @@ import core.Particle;
 
 public class Physics { 
 
+    static final double r = Config.smoothingRadius;
+    static final double m = Config.mass;
+    static final double targetDensity = Config.targetDensity;
+    static final double pressureMultiplier = Config.pressureMultiplier;
+
     public static double smoothingKernel(double d) {
 
-        int r = Config.smoothingRadius;
         double influence = r - d;
 
         if (influence > 0){
@@ -20,7 +24,6 @@ public class Physics {
 
     public static double derivativeKernel(double d) {
 
-        int r = Config.smoothingRadius;
         double influence = r - d;
 
         if (influence > 0){
@@ -37,7 +40,7 @@ public class Physics {
             double dx = p.pos[0] - x;
             double dy = p.pos[1] - y;
             double distance = Math.sqrt(dx * dx + dy * dy);
-            density += Config.mass * smoothingKernel(distance);
+            density += m * smoothingKernel(distance);
         }
         return density;
     }
@@ -70,6 +73,6 @@ public class Physics {
     }
 
     public static double densityToPressure(double density){
-        return Config.pressureMultiplier * (density - Config.targetDensity);
+        return pressureMultiplier * (density - targetDensity);
     }
 }

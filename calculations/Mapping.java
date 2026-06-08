@@ -10,22 +10,22 @@ public class Mapping {
     private static int rows = Config.frameHeight / Config.smoothingRadius + 1;
 
 
-    private static ArrayList<Particle>[] flatGrid = new ArrayList[cols * rows];
+    private static ArrayList<Particle>[] grid = new ArrayList[cols * rows];
     static {
-        for (int i = 0; i < flatGrid.length; i++)
-            flatGrid[i] = new ArrayList<>();
+        for (int i = 0; i < grid.length; i++)
+            grid[i] = new ArrayList<>();
     }
 
     public static void updateGrid(ArrayList<Particle> particles) {
 
-        for (ArrayList<Particle> cell : flatGrid) {
+        for (ArrayList<Particle> cell : grid) {
             cell.clear();
         }
 
         for (Particle p : particles) {
             p.cellX = (int)(p.pos[0] / Config.smoothingRadius);
             p.cellY = (int)(p.pos[1] / Config.smoothingRadius);
-            flatGrid[p.cellY * cols + p.cellX].add(p);
+            grid[p.cellY * cols + p.cellX].add(p);
         }
     }
         
@@ -42,7 +42,7 @@ public class Mapping {
                 int ny = cy + dy;
 
                 if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
-                    result.addAll(flatGrid[ny * cols + nx]);
+                    result.addAll(grid[ny * cols + nx]);
                 }
             }
         }

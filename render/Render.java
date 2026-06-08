@@ -14,7 +14,7 @@ public class Render extends JPanel {
 
     public Render(ArrayList<Particle> particles) {
         this.particles = particles;
-        setBackground(Color.BLACK);
+        setBackground(Color.black);
     }
 
     @Override

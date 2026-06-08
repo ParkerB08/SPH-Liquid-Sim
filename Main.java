@@ -13,7 +13,6 @@ import render.Render;
 public class Main {
 
     private static ArrayList<Particle> particles = new ArrayList<>();
-
     public static void main(String[] args) {
 
         Random rand = new Random();
@@ -39,20 +38,17 @@ public class Main {
 
         Timer timer = new Timer(16, e -> {update(particles); render.repaint();});
         timer.start();
-
     }
 
     public static void update(ArrayList<Particle> particles){
 
         // updates
-        Mapping.initGrid();
         Mapping.updateGrid(particles);
         for (Particle p : particles) {
             Mapping.neighborhoodSearch(p.pos[0], p.pos[1], p.neighbors); 
         }
         updateDensities();
         updatePressures();
-        
         double dt = Config.timeStep;
 
         for (Particle p : particles) {
@@ -71,20 +67,24 @@ public class Main {
             
             // border collision
             if (p.pos[1] > Config.frameHeight - Config.borderOffset) {
-            p.pos[1] = Config.frameHeight - Config.borderOffset;
-            p.vel[1] *= -Config.borderDamp;
+                p.pos[1] = Config.frameHeight - Config.borderOffset;
+                p.vel[1] *= -Config.borderDamp;
+                p.vel[0] *= Config.friction;
             }
             if (p.pos[1] < Config.borderOffset) {
-            p.pos[1] = Config.borderOffset;
-            p.vel[1] *= -Config.borderDamp;
+                p.pos[1] = Config.borderOffset;
+                p.vel[1] *= -Config.borderDamp;
+                p.vel[0] *= Config.friction;
             }
             if (p.pos[0] > Config.frameWidth - Config.borderOffset) {
-            p.pos[0] = Config.frameWidth - Config.borderOffset;
-            p.vel[0] *= -Config.borderDamp;
+                p.pos[0] = Config.frameWidth - Config.borderOffset;
+                p.vel[0] *= -Config.borderDamp;
+                p.vel[1] *= Config.friction;
             }
             if (p.pos[0] < Config.borderOffset) {
-            p.pos[0] = Config.borderOffset;
-            p.vel[0] *= -Config.borderDamp;
+                p.pos[0] = Config.borderOffset;
+                p.vel[0] *= -Config.borderDamp;
+                p.vel[1] *= Config.friction;
             }
         }
     }

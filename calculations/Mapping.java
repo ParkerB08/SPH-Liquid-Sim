@@ -8,16 +8,13 @@ public class Mapping {
 
     private static int cols = Config.frameWidth / Config.smoothingRadius + 1;
     private static int rows = Config.frameHeight / Config.smoothingRadius + 1;
-    private static ArrayList<Particle>[] flatGrid;
 
 
-    public static void initGrid() {
-        flatGrid = new ArrayList[cols * rows];
-        for (int i = 0; i < flatGrid.length; i++) {
+    private static ArrayList<Particle>[] flatGrid = new ArrayList[cols * rows];
+    static {
+        for (int i = 0; i < flatGrid.length; i++)
             flatGrid[i] = new ArrayList<>();
-        }
     }
-
 
     public static void updateGrid(ArrayList<Particle> particles) {
 

@@ -13,7 +13,7 @@ public class Update {
     public static void update(ArrayList<Particle> particles){
 
         // updates
-        //DrawParticles.colorParticles(particles);
+        DrawParticles.colorParticles(particles);
         Mapping.updateGrid(particles);
         for (Particle p : particles) {
             Mapping.neighborhoodSearch(p.pos[0], p.pos[1], p.neighbors); 

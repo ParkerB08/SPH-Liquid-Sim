@@ -1,32 +1,49 @@
 package render;
 
-import javax.swing.JPanel;
-import core.Particle;
-import core.Config;
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+
 import java.util.ArrayList;
+import java.util.Random;
+import javax.swing.Timer;
+import javax.swing.JFrame;
 
-public class Render extends JPanel {
-    private final ArrayList<Particle> particles;
+import core.Config;
+import core.Particle;
 
-    public Render(ArrayList<Particle> particles) {
-        this.particles = particles;
-        setBackground(Color.black);
-    }
+public class Render {
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
-        // Smooth circle edges
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    private static ArrayList<Particle> particles = new ArrayList<>();
 
-        for (Particle p : particles) {
-            g2.setColor(p.colour);
-            g2.fillOval((int) (p.pos[0] - Config.particleRadius), (int) (p.pos[1] - Config.particleRadius), Config.particleRadius * 2, Config.particleRadius * 2);
+    public static void render () {
+
+        Random rand = new Random();
+        double[][] positions = new double[Config.particleAmount][2];
+
+        // assign random particle pos
+        for (int i = 0; i < Config.particleAmount; i++) {
+            positions[i][0] = Config.borderOffset + rand.nextInt(Config.frameWidth - 2 * Config.borderOffset);
+            positions[i][1] = Config.borderOffset + rand.nextInt(Config.frameHeight - 2 * Config.borderOffset);
         }
+
+        // add to array list
+        for (int i = 0; i < Config.particleAmount; i++) {
+            particles.add(new Particle(positions[i][0], positions[i][1], Color.BLUE));
+        }
+
+        // initialize frame/particles
+        JFrame frame = new JFrame("SPH Liquid Sim");
+        DrawParticles sim = new DrawParticles(particles);
+        
+        // frame/particle config
+        sim.setPreferredSize(new java.awt.Dimension(Config.frameWidth, Config.frameHeight));
+        frame.add(sim);
+        frame.pack();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        // start simulation
+        Timer timer = new Timer(16, e -> {Update.update(particles); sim.repaint();});
+        timer.start();
     }
 }

@@ -1,6 +1,7 @@
 package calculations;
 
 import java.util.ArrayList;
+
 import core.Config;
 import core.Particle;
 

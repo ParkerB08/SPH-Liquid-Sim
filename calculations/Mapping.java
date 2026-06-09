@@ -1,6 +1,7 @@
 package calculations;
 
 import java.util.ArrayList;
+
 import core.Config;
 import core.Particle;
 
@@ -8,9 +9,8 @@ public class Mapping {
 
     private static int cols = Config.frameWidth / Config.smoothingRadius + 1;
     private static int rows = Config.frameHeight / Config.smoothingRadius + 1;
-
-
     private static ArrayList<Particle>[] grid = new ArrayList[cols * rows];
+
     static {
         for (int i = 0; i < grid.length; i++)
             grid[i] = new ArrayList<>();

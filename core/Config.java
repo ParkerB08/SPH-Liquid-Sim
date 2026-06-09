@@ -7,7 +7,7 @@ public class Config {
     public static int borderOffset = 25;
     public static int particleRadius = 5;
 
-    public static int particleAmount = 1000;
+    public static int particleAmount = 3000;
     public static double grav = 5;
     public static double borderDamp = 0.7;
     public static double velDamp = 0.985;
@@ -17,5 +17,5 @@ public class Config {
     public static int mass = 1;
     public static int smoothingRadius = 50;
     public static int pressureMultiplier = 1000;
-    public static double targetDensity = 0.001;
+    public static double targetDensity = 0.0013;
 }

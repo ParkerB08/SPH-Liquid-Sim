@@ -26,9 +26,14 @@ public class Update {
             
             // forces
             double[] pressure = Physics.calculatePressure(p.pos[0], p.pos[1], p.pressure, p.density, p.neighbors);
+            double[] viscosity = Physics.calculateViscosity(p.pos[0], p.pos[1], p.vel, p.neighbors);
+
+            for (int i = 0; i < viscosity.length; i++){
+                viscosity[i] *= Config.viscosityCoeffiecient;
+            }
             
-            p.vel[0] += -pressure[0] * dt;
-            p.vel[1] += (-pressure[1] + Config.grav) * dt;
+            p.vel[0] += (-pressure[0] + viscosity[0])* dt;
+            p.vel[1] += (-pressure[1] + viscosity[1] + Config.grav) * dt;
 
             p.vel[0] *= Config.velDamp;
             p.vel[1] *= Config.velDamp;

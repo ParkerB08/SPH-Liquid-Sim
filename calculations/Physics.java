@@ -33,6 +33,16 @@ public class Physics {
         return 0;
     }
 
+    public static double laplacianKernel(double d){
+
+        double influence = r - d;
+
+        if (influence > 0){
+            return (40 / (Math.PI * r * r * r * r * r)) * influence;
+        }
+        return 0;
+    }
+
     public static double calculateDensity(double x, double y, ArrayList<Particle> neighbors) {
 
         double density = 0;
@@ -71,6 +81,27 @@ public class Physics {
             pressureForce[1] -= sharedPressure * Config.mass * influence * direction[1];
         }
         return pressureForce;
+    }
+
+    public static double[] calculateViscosity(double x, double y, double[] velocity, ArrayList<Particle> neighbors){
+
+        double[] viscosityForce = {0, 0};
+        
+        for (Particle p : neighbors) {
+
+            double dx = p.pos[0] - x;
+            double dy = p.pos[1] - y;
+            double distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance == 0){
+                continue;
+            }
+
+            double influence = laplacianKernel(distance);
+            viscosityForce[0] += m * influence * (p.vel[0] - velocity[0]) / p.density;
+            viscosityForce[1] += m * influence * (p.vel[1] - velocity[1]) / p.density;
+        }
+        return viscosityForce;
     }
 
     public static double densityToPressure(double density){

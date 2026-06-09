@@ -32,4 +32,37 @@ public class DrawParticles extends JPanel {
             g2.fillOval((int) (p.pos[0] - Config.particleRadius), (int) (p.pos[1] - Config.particleRadius), Config.particleRadius * 2, Config.particleRadius * 2);
         }
     }
+
+    public static void colorParticles(ArrayList<Particle> particles) {
+
+        double maxSpeed = 5;
+
+        for (Particle p : particles){
+            double speed = Math.sqrt(p.vel[0] * p.vel[0] + p.vel[1] * p.vel[1]);
+            double influence = Math.min(speed / maxSpeed, 1.0);
+
+            int r;
+            int g;
+            int b;
+
+            if (influence < 0.33) {
+                double t = influence / 0.33;
+                r = 0;
+                g = (int) (128 + t * 127);
+                b = 255;
+            } else if (influence < 0.66) {
+                double t = (influence - 0.33) / 0.33;
+                r = (int) (t * 255);
+                g = 255;
+                b = (int) (255 - t * 200);
+            } else {
+                double t = (influence - 0.66) / 0.34;
+                r = 255;
+                g = (int) (255 - t * 190);
+                b = (int) (55 - t * 55);
+            }
+
+            p.colour = new Color(r, g, b);
+        }
+    }
 }

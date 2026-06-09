@@ -21,7 +21,7 @@ public class Render {
 
         // assign random particle pos
         for (int i = 0; i < Config.particleAmount; i++) {
-            positions[i][0] = Config.borderOffset + rand.nextInt(Config.frameWidth - 2 * Config.borderOffset);
+            positions[i][0] = Config.borderOffset + rand.nextInt(Config.frameWidth / 2 - 2 * Config.borderOffset);
             positions[i][1] = Config.borderOffset + rand.nextInt(Config.frameHeight - 2 * Config.borderOffset);
         }
 

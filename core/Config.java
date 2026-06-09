@@ -17,6 +17,6 @@ public class Config {
     public static int mass = 1;
     public static int smoothingRadius = 50;
     public static double pressureMultiplier = 1000;
-    public static double viscosityCoeffiecient = 100;
+    public static double viscosityCoeffiecient = 20;
     public static double targetDensity = 0.001;
 }

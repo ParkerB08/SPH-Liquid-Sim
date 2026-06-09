@@ -3,7 +3,6 @@ package render;
 import java.awt.Color;
 
 import java.util.ArrayList;
-import java.util.Random;
 import javax.swing.Timer;
 import javax.swing.JFrame;
 
@@ -16,13 +15,26 @@ public class Render {
 
     public static void render () {
 
-        Random rand = new Random();
         double[][] positions = new double[Config.particleAmount][2];
 
-        // assign random particle pos
-        for (int i = 0; i < Config.particleAmount; i++) {
-            positions[i][0] = Config.borderOffset + rand.nextInt(Config.frameWidth / 2 - 2 * Config.borderOffset);
-            positions[i][1] = Config.borderOffset + rand.nextInt(Config.frameHeight - 2 * Config.borderOffset);
+        // create grid in center
+        int gridSize = (int) Math.ceil(Math.sqrt(Config.particleAmount));
+        double spacing = 15;
+        double gridWidth = gridSize * spacing;
+        double gridHeight = gridSize * spacing;
+        
+        double centerX = Config.frameWidth / 2.0;
+        double centerY = Config.frameHeight / 2.0;
+        double startX = centerX - gridWidth / 2.0;
+        double startY = centerY - gridHeight / 2.0;
+        
+        int index = 0;
+        for (int row = 0; row < gridSize && index < Config.particleAmount; row++) {
+            for (int col = 0; col < gridSize && index < Config.particleAmount; col++) {
+                positions[index][0] = startX + col * spacing;
+                positions[index][1] = startY + row * spacing;
+                index++;
+            }
         }
 
         // add to array list

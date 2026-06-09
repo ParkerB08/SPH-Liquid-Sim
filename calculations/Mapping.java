@@ -42,7 +42,9 @@ public class Mapping {
                 int ny = cy + dy;
 
                 if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
-                    result.addAll(grid[ny * cols + nx]);
+                    for (Particle p : grid[ny * cols + nx]) {
+                        result.add(p);
+                    }
                 }
             }
         }

@@ -1,9 +1,9 @@
-package render;
+package Render;
 
 import javax.swing.JPanel;
 
-import core.Particle;
-import core.Config;
+import Configure.Config;
+import Configure.Particle;
 
 import java.awt.Color;
 import java.awt.Graphics;

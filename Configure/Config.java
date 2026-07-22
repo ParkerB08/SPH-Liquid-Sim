@@ -1,4 +1,4 @@
-package core;
+package Configure;
 
 public class Config {
 

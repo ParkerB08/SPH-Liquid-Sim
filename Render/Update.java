@@ -1,12 +1,11 @@
-package render;
+package Render;
 
 import java.util.ArrayList;
 
-import calculations.Mapping;
-import calculations.Physics;
-
-import core.Config;
-import core.Particle;
+import Calculate.Mapping;
+import Calculate.Physics;
+import Configure.Config;
+import Configure.Particle;
 
 public class Update {
     
@@ -28,7 +27,6 @@ public class Update {
             // forces
             double[] pressure = Physics.calculatePressure(p.pos[0], p.pos[1], p.pressure, p.density, p.neighbors);
             double[] viscosity = Physics.calculateViscosity(p.pos[0], p.pos[1], p.vel, p.neighbors);
-            double gravVel = 0;
 
             for (int i = 0; i < viscosity.length; i++){
                 viscosity[i] *= Config.viscosityCoeffiecient;

@@ -1,13 +1,14 @@
-package render;
+package Render;
 
 import java.awt.Color;
 
 import java.util.ArrayList;
 import javax.swing.Timer;
-import javax.swing.JFrame;
 
-import core.Config;
-import core.Particle;
+import Configure.Config;
+import Configure.Particle;
+
+import javax.swing.JFrame;
 
 public class Render {
 

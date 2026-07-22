@@ -1,9 +1,9 @@
-package calculations;
+package Calculate;
 
 import java.util.ArrayList;
 
-import core.Config;
-import core.Particle;
+import Configure.Config;
+import Configure.Particle;
 
 public class Mapping {
 
